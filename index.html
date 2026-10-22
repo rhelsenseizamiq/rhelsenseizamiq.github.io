@@ -1,0 +1,950 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zamiq Mustafayev | Linux & DevOps Engineer</title>
+<meta name="description" content="Linux/DevOps engineer with about ten years in infrastructure, Kubernetes, CI/CD and Salesforce DevOps.">
+<style>
+  :root {
+    --bg: #0b1020;
+    --bg-soft: #121a30;
+    --card: #151e38;
+    --line: #25314f;
+    --ink: #e8ecf6;
+    --muted: #93a0bf;
+    --accent: #5eead4;
+    --accent-2: #818cf8;
+    --radius: 16px;
+    --max: 1080px;
+  }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+      --bg: #f6f7fb; --bg-soft: #eceff7; --card: #ffffff; --line: #dde2ef;
+      --ink: #141a2e; --muted: #5b6684; --accent: #0f9d8a; --accent-2: #4f46e5;
+    }
+  }
+  :root[data-theme="light"] {
+    --bg: #f6f7fb; --bg-soft: #eceff7; --card: #ffffff; --line: #dde2ef;
+    --ink: #141a2e; --muted: #5b6684; --accent: #0f9d8a; --accent-2: #4f46e5;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font: 16px/1.65 system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    overflow-x: hidden;
+  }
+  a { color: inherit; text-decoration: none; }
+  ul { list-style: none; }
+  .wrap { width: min(100% - 32px, var(--max)); margin-inline: auto; }
+  section { padding: 96px 0 24px; }
+
+  /* scroll progress bar */
+  .progress {
+    position: fixed; inset: 0 auto auto 0; height: 3px; width: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    transform: scaleX(0); transform-origin: left; z-index: 60;
+  }
+
+  /* nav */
+  header.nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    backdrop-filter: blur(12px);
+    background: color-mix(in srgb, var(--bg) 78%, transparent);
+    border-bottom: 1px solid var(--line);
+    animation: drop .7s ease both;
+  }
+  .nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 62px; }
+  .logo { font-weight: 800; letter-spacing: .3px; }
+  .logo span { color: var(--accent); }
+  .nav ul { display: flex; gap: 22px; font-size: 14px; color: var(--muted); }
+  .nav ul a { position: relative; padding: 4px 0; transition: color .25s; }
+  .nav ul a::after {
+    content: ""; position: absolute; left: 0; bottom: -2px; height: 2px; width: 100%;
+    background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform .3s;
+  }
+  .nav ul a:hover { color: var(--ink); }
+  .nav ul a:hover::after { transform: scaleX(1); }
+  .theme-btn {
+    border: 1px solid var(--line); background: var(--card); color: var(--ink);
+    width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 16px;
+    transition: transform .3s, border-color .3s;
+  }
+  .theme-btn:hover { transform: rotate(25deg) scale(1.08); border-color: var(--accent); }
+  @media (max-width: 720px) { .nav ul { display: none; } }
+
+  /* hero */
+  .hero { min-height: 100vh; display: grid; align-items: center; position: relative; padding-top: 110px; overflow: hidden; }
+  .blob { position: absolute; border-radius: 50%; filter: blur(70px); opacity: .35; z-index: 0; pointer-events: none; }
+  .blob.a { width: 380px; height: 380px; background: var(--accent-2); top: 8%; right: -80px; animation: float 14s ease-in-out infinite; }
+  .blob.b { width: 320px; height: 320px; background: var(--accent); bottom: 6%; left: -90px; animation: float 17s ease-in-out infinite reverse; }
+  .hero .wrap { position: relative; z-index: 1; display: grid; grid-template-columns: 1.4fr 1fr; gap: 48px; align-items: center; }
+  @media (max-width: 860px) { .hero .wrap { grid-template-columns: 1fr; } }
+  .eyebrow { color: var(--accent); font-weight: 600; letter-spacing: 2px; text-transform: uppercase; font-size: 13px; animation: up .8s .1s ease both; }
+  h1 { font-size: clamp(38px, 7vw, 68px); line-height: 1.08; margin: 10px 0 14px; animation: up .8s .25s ease both; }
+  h1 .grad { background: linear-gradient(90deg, var(--accent), var(--accent-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .role { font-size: clamp(18px, 2.6vw, 24px); color: var(--muted); min-height: 1.6em; animation: up .8s .4s ease both; }
+  .role b { color: var(--ink); font-weight: 600; }
+  .caret { display: inline-block; width: 2px; height: 1.1em; background: var(--accent); margin-left: 3px; vertical-align: -3px; animation: blink 1s steps(1) infinite; }
+  .lead { max-width: 560px; margin: 18px 0 28px; color: var(--muted); animation: up .8s .55s ease both; }
+  .cta { display: flex; gap: 12px; flex-wrap: wrap; animation: up .8s .7s ease both; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px; padding: 12px 22px; border-radius: 999px; font-weight: 600; font-size: 15px;
+    border: 1px solid var(--line); transition: transform .25s, box-shadow .25s, border-color .25s, background .25s;
+  }
+  .btn.primary { background: linear-gradient(90deg, var(--accent), var(--accent-2)); color: #07101f; border-color: transparent; }
+  .btn:hover { transform: translateY(-3px); box-shadow: 0 12px 28px -10px color-mix(in srgb, var(--accent) 60%, transparent); }
+  .btn.ghost:hover { border-color: var(--accent); }
+
+  /* terminal card in hero */
+  .term {
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+    box-shadow: 0 30px 60px -30px rgba(0,0,0,.55); overflow: hidden; animation: up .9s .5s ease both;
+    transition: transform .4s;
+  }
+  .term:hover { transform: translateY(-6px) rotate(-.6deg); }
+  .term .bar { display: flex; gap: 7px; padding: 12px 14px; border-bottom: 1px solid var(--line); background: var(--bg-soft); }
+  .term .bar i { width: 11px; height: 11px; border-radius: 50%; background: #ff5f57; }
+  .term .bar i:nth-child(2) { background: #febc2e; }
+  .term .bar i:nth-child(3) { background: #28c840; }
+  .term pre { padding: 18px; font: 13.5px/1.75 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; color: var(--muted); white-space: pre-wrap; }
+  .term .p { color: var(--accent); } .term .k { color: var(--accent-2); } .term .ok { color: #4ade80; }
+
+  /* section heads */
+  .sec-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 36px; }
+  .sec-head span { color: var(--accent); font: 600 14px ui-monospace, Menlo, monospace; }
+  .sec-head h2 { font-size: clamp(26px, 4vw, 36px); }
+  .sec-head::after { content: ""; flex: 1; height: 1px; background: var(--line); transform: scaleX(0); transform-origin: left; transition: transform 1s .2s; }
+  .sec-head.in::after { transform: scaleX(1); }
+
+  /* about + skills */
+  .about { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; }
+  @media (max-width: 860px) { .about { grid-template-columns: 1fr; } }
+  .about p { color: var(--muted); margin-bottom: 14px; }
+  .about p b { color: var(--ink); font-weight: 600; }
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 8px; }
+  .stat { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px; text-align: center; transition: transform .3s, border-color .3s; }
+  .stat:hover { transform: translateY(-4px); border-color: var(--accent); }
+  .stat strong { display: block; font-size: 26px; color: var(--accent); }
+  .stat small { color: var(--muted); }
+
+  .skill-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+  .skill { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; transition: transform .3s, border-color .3s, box-shadow .3s; }
+  .skill:hover { transform: translateY(-5px); border-color: var(--accent-2); box-shadow: 0 18px 40px -22px var(--accent-2); }
+  .skill h3 { font-size: 14px; text-transform: uppercase; letter-spacing: 1.2px; color: var(--accent); margin-bottom: 12px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chips li { font-size: 13px; padding: 5px 11px; border-radius: 999px; background: var(--bg-soft); border: 1px solid var(--line); color: var(--ink); transition: background .25s, transform .25s; }
+  .chips li:hover { background: color-mix(in srgb, var(--accent) 20%, var(--bg-soft)); transform: translateY(-2px); }
+
+  /* timeline */
+  .timeline { position: relative; padding-left: 28px; }
+  .timeline::before { content: ""; position: absolute; left: 6px; top: 6px; bottom: 6px; width: 2px; background: var(--line); }
+  .timeline .fill { position: absolute; left: 6px; top: 6px; width: 2px; height: 0; background: linear-gradient(var(--accent), var(--accent-2)); transition: height .15s linear; }
+  .job { position: relative; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px 24px; margin-bottom: 20px; transition: transform .3s, border-color .3s; }
+  .job:hover { transform: translateX(6px); border-color: var(--accent); }
+  .job::before { content: ""; position: absolute; left: -29px; top: 28px; width: 14px; height: 14px; border-radius: 50%; background: var(--bg); border: 3px solid var(--accent); transition: transform .3s; }
+  .job:hover::before { transform: scale(1.3); }
+  .job header { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 16px; margin-bottom: 8px; }
+  .job h3 { font-size: 18px; }
+  .job .co { color: var(--accent); font-weight: 600; }
+  .job .when { color: var(--muted); font-size: 13px; font-family: ui-monospace, Menlo, monospace; }
+  .job li { position: relative; padding-left: 18px; margin: 6px 0; color: var(--muted); font-size: 15px; }
+  .job li::before { content: "›"; position: absolute; left: 2px; color: var(--accent); font-weight: 700; }
+
+  /* projects */
+  .proj-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 18px; }
+  .proj { display: flex; flex-direction: column; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; transition: transform .35s, border-color .35s, box-shadow .35s; position: relative; overflow: hidden; }
+  .proj::after { content: ""; position: absolute; inset: 0 0 auto 0; height: 3px; background: linear-gradient(90deg, var(--accent), var(--accent-2)); transform: scaleX(0); transform-origin: left; transition: transform .45s; }
+  .proj:hover { transform: translateY(-6px); border-color: var(--accent-2); box-shadow: 0 22px 44px -24px var(--accent-2); }
+  .proj:hover::after { transform: scaleX(1); }
+  .proj h3 { font-size: 17px; margin-bottom: 8px; }
+  .proj p { color: var(--muted); font-size: 14.5px; flex: 1; }
+  .proj .tags { margin-top: 14px; }
+  .proj a.link { margin-top: 14px; font-size: 14px; color: var(--accent); font-weight: 600; }
+  .proj a.link:hover { text-decoration: underline; }
+
+  /* certs */
+  .cert-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; }
+  .cert-group { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; transition: transform .3s, border-color .3s; }
+  .cert-group:hover { transform: translateY(-4px); border-color: var(--accent); }
+  .cert-group h3 { color: var(--accent); font-size: 14px; letter-spacing: 1.2px; text-transform: uppercase; margin-bottom: 10px; }
+  .cert-group li { font-size: 14.5px; padding: 5px 0; border-bottom: 1px dashed var(--line); }
+  .cert-group li:last-child { border: 0; }
+  .cert-group li small { display: block; color: var(--muted); font-size: 12.5px; }
+
+  /* education + contact */
+  .edu { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px 24px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; }
+  .edu strong { font-size: 17px; }
+  .edu span { color: var(--muted); }
+  .contact { text-align: center; padding-bottom: 80px; }
+  .contact p { color: var(--muted); max-width: 520px; margin: 0 auto 26px; }
+  .contact .cta { justify-content: center; }
+  footer { border-top: 1px solid var(--line); text-align: center; padding: 26px 0; color: var(--muted); font-size: 13px; }
+
+  /* reveal on scroll */
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity .8s ease, transform .8s ease; transition-delay: var(--d, 0s); }
+  .reveal.in { opacity: 1; transform: none; }
+
+  /* interactive terminal */
+  .term .bar small { margin-left: auto; color: var(--muted); font: 11.5px ui-monospace, Menlo, monospace; align-self: center; }
+  .term pre { max-height: 260px; overflow-y: auto; scrollbar-width: thin; }
+  .term .prompt { display: flex; gap: 8px; align-items: center; padding: 0 18px 16px; font: 13.5px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; cursor: text; }
+  .term input { flex: 1; background: transparent; border: 0; outline: 0; color: var(--ink); font: inherit; caret-color: var(--accent); }
+  .term input::placeholder { color: var(--muted); opacity: .6; }
+  .term:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent), 0 30px 60px -30px rgba(0,0,0,.55); }
+  .term .err { color: #f87171; }
+
+  /* penguin */
+  .tux { position: fixed; left: 0; bottom: 4px; width: 64px; height: 77px; z-index: 70; cursor: pointer; will-change: transform; }
+  .cursor-on .tux { cursor: none; }
+  .tux-body { width: 100%; height: 100%; transform-origin: 50% 100%; }
+  .tux svg { width: 100%; height: 100%; overflow: visible; display: block; filter: drop-shadow(0 6px 6px rgba(0,0,0,.35)); }
+  .tux.walk .tux-body { animation: waddle .42s ease-in-out infinite alternate; }
+  .tux svg g { transform-box: fill-box; }
+  .tux.walk .foot-l { animation: step .42s ease-in-out infinite alternate; }
+  .tux.walk .foot-r { animation: step .42s ease-in-out infinite alternate-reverse; }
+  .tux.walk .wing-l { animation: flap .42s ease-in-out infinite alternate; transform-origin: 80% 10%; transform-box: fill-box; }
+  .tux.walk .wing-r { animation: flap .42s ease-in-out infinite alternate-reverse; transform-origin: 20% 10%; transform-box: fill-box; }
+  .tux .pupils { transition: transform .3s; }
+  .tux-say { position: absolute; bottom: 86px; width: max-content; max-width: 210px; padding: 8px 12px; border-radius: 12px; background: var(--card);
+    border: 1px solid var(--accent); color: var(--ink); font-size: 13px; line-height: 1.4; opacity: 0; transform: translateY(6px); pointer-events: none; transition: opacity .3s, transform .3s; }
+  .tux-say.show { opacity: 1; transform: none; }
+  @keyframes waddle { from { transform: rotate(-6deg); } to { transform: rotate(6deg); } }
+  @keyframes step { from { transform: translateY(0); } to { transform: translateY(-4px); } }
+  @keyframes flap { from { transform: rotate(8deg); } to { transform: rotate(-12deg); } }
+
+  /* interactivity: filters, skill highlight, tilt, burst */
+  .hint { color: var(--muted); font-size: 14px; margin: -14px 0 20px; }
+  .filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 22px; }
+  .f { border: 1px solid var(--line); background: var(--card); color: var(--muted); padding: 8px 18px; border-radius: 999px; font-family: inherit; font-weight: 600; font-size: 14px; cursor: pointer;
+    transition: background .25s, color .25s, border-color .25s, transform .25s; }
+  .f:hover { color: var(--ink); border-color: var(--accent); transform: translateY(-2px); }
+  .f.on { background: linear-gradient(90deg, var(--accent), var(--accent-2)); color: #07101f; border-color: transparent; }
+  .proj.gone { display: none; }
+  .proj.pop { animation: pop .45s cubic-bezier(.2,.9,.3,1.3) both; }
+  .skill .chips li { cursor: pointer; user-select: none; }
+  .skill .chips li.active { background: linear-gradient(90deg, var(--accent), var(--accent-2)); color: #07101f; border-color: transparent; font-weight: 600; }
+  .job.dim { opacity: .32; transform: scale(.985); }
+  .job.match { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent), 0 18px 40px -22px var(--accent); }
+  .job { transition: transform .3s, border-color .3s, opacity .4s, box-shadow .4s; }
+  .tilt { transform-style: preserve-3d; }
+  .spark { position: fixed; left: 0; top: 0; width: 7px; height: 7px; border-radius: 50%; pointer-events: none; z-index: 99; }
+  @keyframes pop { from { opacity: 0; transform: scale(.88) translateY(14px); } to { opacity: 1; transform: none; } }
+
+  /* custom cursor: dot + trailing ring (mouse devices only, enabled by JS) */
+  body.cursor-on, body.cursor-on * { cursor: none !important; }
+  body.cursor-on input, body.cursor-on .term .prompt, body.cursor-on .term .prompt * { cursor: text !important; }
+  .c-dot, .c-ring { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 100; border-radius: 50%; opacity: 0; will-change: transform; }
+  .c-dot { width: 8px; height: 8px; margin: -4px 0 0 -4px; background: var(--accent); transition: opacity .25s, width .25s, height .25s, margin .25s; }
+  .c-ring { width: 38px; height: 38px; margin: -19px 0 0 -19px; border: 1.5px solid var(--accent-2);
+    transition: opacity .25s, width .3s, height .3s, margin .3s, background .3s, border-color .3s; }
+  body.has-mouse .c-dot, body.has-mouse .c-ring { opacity: 1; }
+  .c-ring.hover { width: 64px; height: 64px; margin: -32px 0 0 -32px; background: color-mix(in srgb, var(--accent) 16%, transparent); border-color: var(--accent); }
+  .c-dot.hover { width: 5px; height: 5px; margin: -2.5px 0 0 -2.5px; }
+  .c-ring.down { width: 26px; height: 26px; margin: -13px 0 0 -13px; background: color-mix(in srgb, var(--accent-2) 30%, transparent); }
+  .c-dot.text, .c-ring.text { opacity: 0 !important; }
+
+  /* cursor glow + matrix + toast */
+  .glow { position: fixed; width: 420px; height: 420px; margin: -210px 0 0 -210px; border-radius: 50%; pointer-events: none; z-index: 1;
+    background: radial-gradient(circle, color-mix(in srgb, var(--accent) 16%, transparent), transparent 65%); transition: opacity .4s; opacity: 0; }
+  body.has-mouse .glow { opacity: 1; }
+  #matrix { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 80; pointer-events: none; opacity: 0; transition: opacity .6s; }
+  #matrix.on { opacity: .9; }
+  .toast { position: fixed; left: 50%; bottom: 28px; transform: translate(-50%, 30px); background: var(--card); border: 1px solid var(--accent);
+    color: var(--ink); padding: 12px 20px; border-radius: 999px; font-size: 14px; z-index: 90; opacity: 0; pointer-events: none;
+    transition: opacity .4s, transform .4s; box-shadow: 0 18px 40px -18px rgba(0,0,0,.6); }
+  .toast.show { opacity: 1; transform: translate(-50%, 0); }
+  .wave { display: inline-block; transform-origin: 70% 80%; animation: wave 2.4s 1.2s ease-in-out 2; }
+  .stat, .skill, .proj, .cert-group { cursor: default; }
+  .logo { cursor: pointer; user-select: none; }
+  .spin { animation: spin .9s ease; }
+
+  /* keyframes */
+  @keyframes wave { 0%, 60%, 100% { transform: rotate(0); } 10%, 30% { transform: rotate(16deg); } 20%, 40% { transform: rotate(-10deg); } 50% { transform: rotate(10deg); } }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes up { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: none; } }
+  @keyframes drop { from { opacity: 0; transform: translateY(-100%); } to { opacity: 1; transform: none; } }
+  @keyframes float { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(-30px, 40px) scale(1.12); } }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .reveal { opacity: 1; transform: none; }
+    html { scroll-behavior: auto; }
+  }
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<div class="glow" id="glow" aria-hidden="true"></div>
+<canvas id="matrix" aria-hidden="true"></canvas>
+<div class="toast" id="toast" role="status"></div>
+
+<header class="nav">
+  <div class="wrap">
+    <a href="#top" class="logo">zamiq<span>.</span>dev</a>
+    <nav><ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#certs">Certifications</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul></nav>
+    <button class="theme-btn" id="theme" aria-label="Toggle light and dark theme">◐</button>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="blob a"></div><div class="blob b"></div>
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">Baku · open to remote</p>
+        <h1><span class="wave">👋</span> Hi, I'm <span class="grad">Zamiq Mustafayev</span></h1>
+        <p class="role">I work as a <b id="typed"></b><span class="caret"></span></p>
+        <p class="lead">About ten years in infrastructure and integration, mostly for banks and mid-size tech companies. Kubernetes, CI/CD, and the Python that keeps monitoring, ticketing and deployments talking to each other.</p>
+        <div class="cta">
+          <a class="btn primary" href="#projects">See my work →</a>
+          <a class="btn ghost" href="#contact">Get in touch</a>
+        </div>
+      </div>
+      <aside class="term" id="term" aria-label="Interactive terminal. Type help.">
+        <div class="bar"><i></i><i></i><i></i><small>zamiq@portfolio ~ (click &amp; type)</small></div>
+        <pre id="out"></pre>
+        <label class="prompt"><span class="p">$</span>
+          <input id="cmd" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="try: help" aria-label="Terminal command">
+        </label>
+      </aside>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="wrap">
+      <div class="sec-head reveal"><span>01</span><h2>About</h2></div>
+      <div class="about">
+        <div class="reveal">
+          <p>I'm a <b>Linux/DevOps engineer</b>. The last few years have been Kubernetes, CI/CD and Python glue between monitoring, ticketing and deployment systems.</p>
+          <p>Since 2021 I've also been doing <b>Salesforce DevOps</b> (Apex, SFDX, Copado), and recently I've picked up n8n and GPT-4 automation for things like incident triage and release notes.</p>
+          <p>I like owning something end to end, from the Terraform that provisions it to the Python that keeps it talking to everything else.</p>
+        </div>
+        <div class="reveal" style="--d:.15s">
+          <div class="stats">
+            <div class="stat"><strong data-count="10" data-suffix="+">0</strong><small>years in infra</small></div>
+            <div class="stat"><strong data-count="8" data-suffix="">0</strong><small>roles</small></div>
+            <div class="stat"><strong data-count="11" data-suffix="">0</strong><small>certifications</small></div>
+          </div>
+          <p style="margin-top:22px">Languages: English, Russian, Turkish (fluent), Azerbaijani (native), German (basic).</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="wrap">
+      <div class="sec-head reveal"><span>02</span><h2>Skills</h2></div>
+      <p class="hint reveal">Tip: click a skill to highlight the roles where I used it.</p>
+      <div class="skill-grid">
+        <div class="skill reveal"><h3>Scripting</h3><ul class="chips"><li>Python</li><li>Bash</li><li>Apex</li><li>SOQL</li></ul></div>
+        <div class="skill reveal" style="--d:.05s"><h3>Cloud &amp; containers</h3><ul class="chips"><li>AWS (EKS, Lambda, S3, SQS)</li><li>Azure (AKS, DevOps)</li><li>Kubernetes</li><li>Docker</li><li>Helm</li></ul></div>
+        <div class="skill reveal" style="--d:.1s"><h3>IaC &amp; CI/CD</h3><ul class="chips"><li>Terraform</li><li>Ansible</li><li>GitLab CI</li><li>Jenkins</li><li>Git</li><li>GitOps</li></ul></div>
+        <div class="skill reveal" style="--d:.15s"><h3>Systems &amp; networking</h3><ul class="chips"><li>Linux (RHEL)</li><li>VMware</li><li>KVM</li><li>Cisco ASA</li><li>Palo Alto</li><li>F5</li></ul></div>
+        <div class="skill reveal" style="--d:.2s"><h3>Monitoring</h3><ul class="chips"><li>Prometheus</li><li>Grafana</li><li>Nagios</li><li>Zabbix</li><li>ELK</li></ul></div>
+        <div class="skill reveal" style="--d:.25s"><h3>Security</h3><ul class="chips"><li>CIS hardening</li><li>SIEM</li><li>IDS/IPS</li><li>WAF</li><li>Nessus</li><li>Pen testing basics</li></ul></div>
+        <div class="skill reveal" style="--d:.3s"><h3>Salesforce</h3><ul class="chips"><li>Admin</li><li>Apex/LWC</li><li>SFDX</li><li>Copado</li><li>Metadata &amp; Bulk API</li></ul></div>
+        <div class="skill reveal" style="--d:.35s"><h3>Automation &amp; AI tooling</h3><ul class="chips"><li>n8n</li><li>Zapier</li><li>OpenAI API</li><li>ClickUp</li></ul></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="experience">
+    <div class="wrap">
+      <div class="sec-head reveal"><span>03</span><h2>Experience</h2></div>
+      <div class="timeline" id="timeline">
+        <div class="fill" id="fill"></div>
+
+        <article class="job reveal">
+          <header><div><h3>Linux/DevOps Engineer, Integration &amp; Automation</h3><div class="co">ABB (Azerbaijan International Bank) · Baku</div></div><div class="when">2023 – Present</div></header>
+          <ul>
+            <li>Built a Python service that feeds Nagios/Prometheus alerts into our ITSM ticketing system, handling most of the day-to-day event correlation that used to be manual.</li>
+            <li>Run Kubernetes workloads (on-prem plus Azure AKS) with Helm and GitOps; moved autoscaling off plain CPU metrics onto custom Prometheus signals.</li>
+            <li>Rewrote the GitLab CI pipelines into proper stages (build, test, security scan, deploy) so releases run the same way every time.</li>
+            <li>Wrote the Terraform/Ansible stack for provisioning Azure and on-prem resources, so new environments don't need manual setup.</li>
+            <li>Set up Prometheus and Grafana with alerting into Slack/PagerDuty, so on-call gets alerts with context instead of raw noise.</li>
+            <li>Handle CIS benchmark hardening and compliance scanning on systems that get audited.</li>
+          </ul>
+        </article>
+
+        <article class="job reveal">
+          <header><div><h3>Salesforce DevOps Engineer</h3><div class="co">ITG · Lithuania (remote)</div></div><div class="when">2022 – 2023</div></header>
+          <ul>
+            <li>Set up CI/CD for multi-org Salesforce deployments (Copado, Git, Bitbucket) and wrote the branching strategy the team still uses.</li>
+            <li>Automated data migrations and cross-org syncs with Python against the Metadata and Bulk APIs.</li>
+            <li>Owned sandbox refreshes and the code-quality and security gates before production.</li>
+            <li>Worked with SFDX scratch orgs and unlocked packages to make deployments more modular.</li>
+          </ul>
+        </article>
+
+        <article class="job reveal">
+          <header><div><h3>Salesforce DevOps Engineer</h3><div class="co">Persistent Systems · Remote</div></div><div class="when">2021 – 2022</div></header>
+          <ul>
+            <li>Built real-time integrations between Salesforce and third-party systems (REST/SOAP, middleware) for a unified customer view across CRM and ERP.</li>
+            <li>Wrote Apex REST services and platform events for two-way integrations, and handled releases across several orgs.</li>
+            <li>Built Lightning Web Components and Visualforce pages, with Apex tests written alongside the code.</li>
+            <li>Configured Connected Apps and OAuth for secure API access against the identity provider.</li>
+          </ul>
+        </article>
+
+        <article class="job reveal">
+          <header><div><h3>DevOps / Security Engineer</h3><div class="co">Vebtech · Minsk, Belarus</div></div><div class="when">2020 – 2021</div></header>
+          <ul>
+            <li>Added SAST/DAST/SCA scanning to the CI/CD pipeline.</li>
+            <li>Ran internal and external pen tests plus a few red-team exercises; configured IDS/IPS, SIEM and WAF rules.</li>
+            <li>Automated hardening and access-control checks with Python and Ansible.</li>
+            <li>Ran vulnerability scans (Nessus, OpenVAS) across the servers and tracked remediation through to close.</li>
+          </ul>
+        </article>
+
+        <article class="job reveal">
+          <header><div><h3>DevOps Engineer, Kubernetes</h3><div class="co">LogicLike · Minsk, Belarus</div></div><div class="when">2020</div></header>
+          <ul>
+            <li>Deployed and ran Kubernetes clusters on EKS and on-prem, using Jobs/CronJobs for batch workflows.</li>
+            <li>Set up custom-metric autoscaling tied to queue depth, so idle capacity scaled down when queues were empty.</li>
+            <li>Built the multi-AZ AWS networking behind it (VPC, NAT, ALB).</li>
+          </ul>
+        </article>
+
+        <article class="job reveal">
+          <header><div><h3>System Engineer, Cloud Integration</h3><div class="co">EPAM Systems · Minsk, Belarus</div></div><div class="when">2018 – 2020</div></header>
+          <ul>
+            <li>Built Python microservices for event-driven pipelines on AWS (S3, SQS, Lambda, RDS).</li>
+            <li>Set up EventBridge automation connecting many internal systems.</li>
+            <li>Built CI/CD (Git to Jenkins to Docker to Kubernetes) with blue/green deploys and automatic rollback.</li>
+            <li>Wrote Terraform/CloudFormation for the AWS/Azure footprint and added SAST/DAST/SCA gates.</li>
+          </ul>
+        </article>
+
+        <article class="job reveal">
+          <header><div><h3>Systems &amp; Infrastructure Specialist</h3><div class="co">Yapi Kredi Bank · Baku</div></div><div class="when">2015 – 2018</div></header>
+          <ul>
+            <li>Administered VMware/KVM environments and the network stack (Cisco ASA/ISE, F5, Palo Alto).</li>
+            <li>Supported PCI DSS and GDPR compliance: audits, scans, remediation follow-up.</li>
+            <li>Set up DR/backup with Veritas NetBackup for Tier-1 banking systems.</li>
+            <li>Managed a large fleet of Linux servers: patching, capacity planning, on-call for banking systems.</li>
+          </ul>
+        </article>
+
+        <article class="job reveal">
+          <header><div><h3>Linux/Unix Administrator</h3><div class="co">SMART Technologies · Baku</div></div><div class="when">2014 – 2015</div></header>
+          <ul>
+            <li>Deployed and hardened Linux servers: SSH and firewall configuration, user access.</li>
+            <li>Wrote Bash/Python scripts for routine maintenance and set up Nagios monitoring.</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="wrap">
+      <div class="sec-head reveal"><span>04</span><h2>Projects</h2></div>
+      <div class="filters reveal" id="filters" role="group" aria-label="Filter projects">
+        <button class="f on" data-f="all">All</button><button class="f" data-f="security">Security</button><button class="f" data-f="automation">Automation</button><button class="f" data-f="platform">Platform</button>
+      </div>
+      <div class="proj-grid">
+        <article class="proj reveal" data-cat="platform security">
+          <h3>IOP, infrastructure &amp; security platform</h3>
+          <p>FastAPI/MongoDB/React app for IP management, RBAC + LDAP auth, real-time firewall investigation, and nightly sync from Device42, Zabbix, Palo Alto and vCenter.</p>
+          <ul class="chips tags"><li>FastAPI</li><li>MongoDB</li><li>React</li></ul>
+          <a class="link" href="https://github.com/rhelsenseizamiq/IOP" target="_blank" rel="noopener">View on GitHub →</a>
+        </article>
+        <article class="proj reveal" data-cat="security" style="--d:.08s">
+          <h3>CIS benchmark CLI</h3>
+          <p>Python tool that audits AWS, Azure and GCP against CIS benchmarks and outputs HTML, Excel and Markdown reports.</p>
+          <ul class="chips tags"><li>Python</li><li>AWS</li><li>Azure</li><li>GCP</li></ul>
+          <a class="link" href="https://github.com/rhelsenseizamiq/cis-benchmark" target="_blank" rel="noopener">View on GitHub →</a>
+        </article>
+        <article class="proj reveal" data-cat="security" style="--d:.16s">
+          <h3>SecureVault</h3>
+          <p>Encrypted credential vault (AES-256) with a bundled SSH fleet client built on Paramiko.</p>
+          <ul class="chips tags"><li>Python</li><li>AES-256</li><li>Paramiko</li></ul>
+          <a class="link" href="https://github.com/rhelsenseizamiq/SecureVault" target="_blank" rel="noopener">View on GitHub →</a>
+        </article>
+        <article class="proj reveal" data-cat="automation">
+          <h3>AI-powered incident response</h3>
+          <p>n8n workflow that takes Prometheus/Grafana alerts, adds host metadata and recent logs, and asks GPT-4 for a root-cause guess and suggested fix. P1s ping Slack and PagerDuty; the rest become ClickUp tasks.</p>
+          <ul class="chips tags"><li>n8n</li><li>GPT-4</li><li>Prometheus</li></ul>
+        </article>
+        <article class="proj reveal" data-cat="automation" style="--d:.08s">
+          <h3>Multi-source data pipeline</h3>
+          <p>Zapier triggers on several source systems feed an n8n workflow that batches records, classifies them with OpenAI, and writes to ClickUp and a Google Sheets dashboard.</p>
+          <ul class="chips tags"><li>n8n</li><li>Zapier</li><li>OpenAI</li></ul>
+        </article>
+        <article class="proj reveal" data-cat="automation" style="--d:.16s">
+          <h3>Runbook &amp; release-notes assistants</h3>
+          <p>Slack messages become structured ClickUp runbook docs, and PR merges generate a plain-English changelog with a risk assessment.</p>
+          <ul class="chips tags"><li>n8n</li><li>GPT-4</li><li>GitHub</li></ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="certs">
+    <div class="wrap">
+      <div class="sec-head reveal"><span>05</span><h2>Certifications</h2></div>
+      <div class="cert-grid">
+        <div class="cert-group reveal"><h3>Salesforce</h3><ul>
+          <li>Administrator <small>ADM-201</small></li>
+          <li>Platform Developer I <small>PD1</small></li>
+          <li>Sharing and Visibility Architect <small>Architect track</small></li></ul></div>
+        <div class="cert-group reveal" style="--d:.08s"><h3>Cloud</h3><ul>
+          <li>AWS Solutions Architect – Associate <small>SAA-C02</small></li></ul></div>
+        <div class="cert-group reveal" style="--d:.16s"><h3>Linux</h3><ul>
+          <li>LPIC-1 <small>101-500 / 102-500</small></li>
+          <li>LPIC-2 <small>201-450 / 202-450</small></li>
+          <li>LPIC-3 <small>300 / 303 / 304</small></li>
+          <li>Oracle Linux OCA <small>1Z0-100</small></li></ul></div>
+        <div class="cert-group reveal" style="--d:.24s"><h3>Networking &amp; Security</h3><ul>
+          <li>CCNA <small>200-301</small></li>
+          <li>Tenable Certified Nessus Auditor</li>
+          <li>Certified Ethical Hacker <small>CEH v12</small></li></ul></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="education">
+    <div class="wrap">
+      <div class="sec-head reveal"><span>06</span><h2>Education</h2></div>
+      <div class="edu reveal"><div><strong>BSc, Computer Engineering</strong><br><span>Qafqaz University, Baku</span></div><span>2009 – 2015</span></div>
+    </div>
+  </section>
+
+  <section id="contact" class="contact">
+    <div class="wrap reveal">
+      <div class="sec-head" style="justify-content:center"><h2>Let's talk</h2></div>
+      <p>Open to senior infrastructure, DevOps and DevSecOps roles. The easiest way to reach me is by email.</p>
+      <div class="cta">
+        <a class="btn primary" href="mailto:zamiq.mustafayev@gmail.com">Email me</a>
+        <a class="btn ghost" href="https://github.com/rhelsenseizamiq" target="_blank" rel="noopener">GitHub</a>
+        <a class="btn ghost" href="https://www.linkedin.com/in/zamiq-mustafayev-90a5903b1/" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>© <span id="yr"></span> Zamiq Mustafayev</footer>
+
+<script>
+(function () {
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // typed role rotator
+  var roles = ["Linux/DevOps engineer", "Kubernetes & CI/CD builder", "Salesforce DevOps engineer", "automation tinkerer"];
+  var el = document.getElementById("typed");
+  var r = 0, c = 0, del = false;
+  function typeTick() {
+    var word = roles[r];
+    el.textContent = word.slice(0, c);
+    if (!del && c === word.length) { del = true; return setTimeout(typeTick, 1500); }
+    if (del && c === 0) { del = false; r = (r + 1) % roles.length; }
+    c += del ? -1 : 1;
+    setTimeout(typeTick, del ? 35 : 75);
+  }
+  if (reduce) { el.textContent = roles[0]; } else { typeTick(); }
+
+  // reveal on scroll + section line + counters
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      e.target.classList.add("in");
+      e.target.querySelectorAll("[data-count]").forEach(count);
+      io.unobserve(e.target);
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll(".reveal, .sec-head").forEach(function (n) { io.observe(n); });
+
+  function count(n) {
+    var to = +n.dataset.count, suffix = n.dataset.suffix || "", start = null;
+    if (reduce) { n.textContent = to + suffix; return; }
+    function step(t) {
+      start = start || t;
+      var p = Math.min((t - start) / 1200, 1);
+      n.textContent = Math.round(to * (1 - Math.pow(1 - p, 3))) + suffix;
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  // scroll progress + timeline fill
+  var bar = document.getElementById("progress"), tl = document.getElementById("timeline"), fill = document.getElementById("fill");
+  function onScroll() {
+    var h = document.documentElement;
+    bar.style.transform = "scaleX(" + (h.scrollTop / (h.scrollHeight - h.clientHeight || 1)) + ")";
+    var box = tl.getBoundingClientRect(), vh = window.innerHeight;
+    var done = Math.min(Math.max(vh * 0.6 - box.top, 0), box.height - 12);
+    fill.style.height = done + "px";
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+
+  // theme toggle (remembered when storage is available)
+  var root = document.documentElement, btn = document.getElementById("theme");
+  try { var saved = localStorage.getItem("theme"); if (saved) root.dataset.theme = saved; } catch (e) {}
+  btn.addEventListener("click", function () {
+    var dark = root.dataset.theme ? root.dataset.theme === "dark" : !window.matchMedia("(prefers-color-scheme: light)").matches;
+    root.dataset.theme = dark ? "light" : "dark";
+    try { localStorage.setItem("theme", root.dataset.theme); } catch (e) {}
+  });
+
+  document.getElementById("yr").textContent = new Date().getFullYear();
+
+  // ---------- fun stuff ----------
+  var toastEl = document.getElementById("toast"), toastT;
+  function toast(msg) {
+    toastEl.textContent = msg; toastEl.classList.add("show");
+    clearTimeout(toastT); toastT = setTimeout(function () { toastEl.classList.remove("show"); }, 3200);
+  }
+
+  // cursor glow (mouse devices only)
+  var glow = document.getElementById("glow");
+  if (!reduce && window.matchMedia("(hover: hover)").matches) {
+    window.addEventListener("mousemove", function (e) {
+      document.body.classList.add("has-mouse");
+      glow.style.transform = "translate(" + e.clientX + "px," + e.clientY + "px)";
+    }, { passive: true });
+  }
+
+  // custom cursor: sharp dot follows instantly, ring trails behind with easing
+  if (!reduce && window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+    var dot = document.createElement("div"), ring = document.createElement("div");
+    dot.className = "c-dot"; ring.className = "c-ring";
+    dot.setAttribute("aria-hidden", "true"); ring.setAttribute("aria-hidden", "true");
+    document.body.appendChild(ring); document.body.appendChild(dot);
+    document.body.classList.add("cursor-on");
+    var mx = -100, my = -100, rx = -100, ry = -100;
+    window.addEventListener("mousemove", function (e) {
+      mx = e.clientX; my = e.clientY;
+      dot.style.transform = "translate(" + mx + "px," + my + "px)";
+    }, { passive: true });
+    (function follow() {
+      rx += (mx - rx) * 0.18; ry += (my - ry) * 0.18;
+      ring.style.transform = "translate(" + rx + "px," + ry + "px)";
+      requestAnimationFrame(follow);
+    })();
+    var hoverSel = "a, button, .f, .btn, .logo, .tux, .theme-btn, .proj, .skill, .job, .stat, .cert-group, .chips li";
+    document.addEventListener("mouseover", function (e) {
+      var t = e.target.closest ? e.target : e.target.parentElement;
+      var isText = !!t.closest("input, .term .prompt");
+      var isHover = !isText && !!t.closest(hoverSel);
+      dot.classList.toggle("text", isText); ring.classList.toggle("text", isText);
+      dot.classList.toggle("hover", isHover); ring.classList.toggle("hover", isHover);
+    });
+    document.addEventListener("mousedown", function () { ring.classList.add("down"); });
+    document.addEventListener("mouseup", function () { ring.classList.remove("down"); });
+    document.addEventListener("mouseleave", function () { document.body.classList.remove("has-mouse"); });
+  }
+
+  // ---------- more interactive ----------
+  var fine = !reduce && window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+
+  // project filters
+  var projs = Array.prototype.slice.call(document.querySelectorAll(".proj"));
+  document.getElementById("filters").addEventListener("click", function (e) {
+    var b = e.target.closest(".f"); if (!b) return;
+    document.querySelectorAll(".f").forEach(function (x) { x.classList.toggle("on", x === b); });
+    var f = b.dataset.f, shown = 0;
+    projs.forEach(function (p) {
+      var ok = f === "all" || p.dataset.cat.split(" ").indexOf(f) > -1;
+      p.classList.toggle("gone", !ok);
+      p.classList.remove("pop"); p.classList.add("in");
+      if (ok) { void p.offsetWidth; p.style.setProperty("--d", "0s"); p.classList.add("pop"); p.style.animationDelay = (shown++ * 70) + "ms"; }
+    });
+  });
+
+  // click a skill -> highlight matching roles
+  var jobs = Array.prototype.slice.call(document.querySelectorAll(".job"));
+  var activeChip = null;
+  function clearSkill() { jobs.forEach(function (j) { j.classList.remove("dim", "match"); }); if (activeChip) activeChip.classList.remove("active"); activeChip = null; }
+  document.querySelectorAll(".skill .chips li").forEach(function (chip) {
+    chip.addEventListener("click", function () {
+      if (activeChip === chip) { clearSkill(); return toast("Highlight cleared"); }
+      clearSkill(); activeChip = chip; chip.classList.add("active");
+      var key = chip.textContent.split(" (")[0].replace(/^Pen testing basics$/, "pen test").replace(/^Metadata & Bulk API$/, "bulk api").toLowerCase();
+      var n = 0;
+      jobs.forEach(function (j) {
+        var hit = j.textContent.toLowerCase().indexOf(key) > -1;
+        j.classList.toggle("match", hit); j.classList.toggle("dim", !hit); if (hit) n++;
+      });
+      if (!n) { clearSkill(); return toast("'" + key + "' lives in my skills list, not in a role bullet"); }
+      toast(n + (n === 1 ? " role uses " : " roles use ") + chip.textContent.split(" (")[0] + ". Click again to clear.");
+      document.getElementById("experience").scrollIntoView({ behavior: "smooth" });
+    });
+  });
+
+  // 3D tilt on cards
+  if (fine) {
+    document.querySelectorAll(".proj, .skill, .cert-group, .stat").forEach(function (card) {
+      var base = card.style.transition;
+      card.addEventListener("mouseenter", function () { card.style.transition = "transform .12s ease-out, border-color .35s, box-shadow .35s"; card.style.transitionDelay = "0s"; });
+      card.addEventListener("mousemove", function (e) {
+        var r = card.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+        card.style.transform = "perspective(700px) rotateX(" + (-y * 9).toFixed(2) + "deg) rotateY(" + (x * 9).toFixed(2) + "deg) translateY(-6px)";
+      });
+      card.addEventListener("mouseleave", function () { card.style.transition = base; card.style.transform = ""; card.style.transitionDelay = ""; });
+    });
+
+    // magnetic buttons
+    document.querySelectorAll(".btn, .theme-btn").forEach(function (b) {
+      b.addEventListener("mousemove", function (e) {
+        var r = b.getBoundingClientRect();
+        b.style.transform = "translate(" + ((e.clientX - r.left - r.width / 2) * .25).toFixed(1) + "px," + ((e.clientY - r.top - r.height / 2) * .35).toFixed(1) + "px)";
+      });
+      b.addEventListener("mouseleave", function () { b.style.transform = ""; });
+    });
+  }
+
+  // click burst
+  if (!reduce) {
+    document.addEventListener("click", function (e) {
+      if (e.target.closest("input")) return;
+      var colors = ["#5eead4", "#818cf8", "#f0abfc", "#fde68a"];
+      for (var i = 0; i < 12; i++) {
+        var p = document.createElement("i"); p.className = "spark";
+        p.style.background = colors[i % colors.length];
+        document.body.appendChild(p);
+        var a = (Math.PI * 2 * i) / 12 + Math.random() * .5, d = 34 + Math.random() * 46;
+        p.animate([
+          { transform: "translate(" + e.clientX + "px," + e.clientY + "px) scale(1)", opacity: 1 },
+          { transform: "translate(" + (e.clientX + Math.cos(a) * d) + "px," + (e.clientY + Math.sin(a) * d) + "px) scale(0)", opacity: 0 }
+        ], { duration: 650 + Math.random() * 250, easing: "cubic-bezier(.2,.8,.3,1)" }).onfinish = (function (n) { return function () { n.remove(); }; })(p);
+      }
+    });
+  }
+
+  // ---------- penguin ----------
+  var tux = null;
+  if (!reduce) {
+    var el2 = document.createElement("div");
+    el2.className = "tux"; el2.setAttribute("role", "img"); el2.setAttribute("aria-label", "A small penguin walking around the page. Click it.");
+    el2.innerHTML =
+      '<div class="tux-say" id="tuxsay"></div><div class="tux-body" id="tuxbody">' +
+      '<svg viewBox="0 0 80 96" aria-hidden="true">' +
+      '<g class="foot-l"><path d="M8 90 Q10 83 22 84 Q34 84 37 90 Q34 96 22 96 Q10 96 8 90Z" fill="#f6a800" stroke="#c98200" stroke-width="1"/></g>' +
+      '<g class="foot-r"><path d="M43 90 Q46 84 58 84 Q70 83 72 90 Q70 96 58 96 Q46 96 43 90Z" fill="#f6a800" stroke="#c98200" stroke-width="1"/></g>' +
+      '<path class="wing-l" d="M16 44 Q1 58 7 77 Q15 74 22 56Z" fill="#313f60"/>' +
+      '<path class="wing-r" d="M64 44 Q79 58 73 77 Q65 74 58 56Z" fill="#313f60"/>' +
+      '<path d="M40 5 C24 5 18 19 18 31 C18 40 11 50 10 64 C9 80 22 91 40 91 C58 91 71 80 70 64 C69 50 62 40 62 31 C62 19 56 5 40 5Z" fill="#222c43"/>' +
+      '<ellipse cx="29" cy="18" rx="5" ry="9" fill="#fff" opacity=".09" transform="rotate(18 29 18)"/>' +
+      '<path d="M40 32 C30 34 24 47 24 63 C24 79 31 87 40 87 C49 87 56 79 56 63 C56 47 50 34 40 32Z" fill="#f5f7fb"/>' +
+      '<ellipse cx="32.5" cy="23" rx="7.5" ry="8.5" fill="#fff"/><ellipse cx="47.5" cy="23" rx="7.5" ry="8.5" fill="#fff"/>' +
+      '<g class="pupils" id="tuxeyes"><circle cx="33" cy="24" r="3.4" fill="#0b1020"/><circle cx="47" cy="24" r="3.4" fill="#0b1020"/>' +
+      '<circle cx="34.2" cy="22.8" r="1.1" fill="#fff"/><circle cx="48.2" cy="22.8" r="1.1" fill="#fff"/></g>' +
+      '<path d="M32 39 Q40 50 48 39 Q40 43 32 39Z" fill="#e08e00"/>' +
+      '<path d="M29 33 Q40 26 51 33 Q49 42 40 43 Q31 42 29 33Z" fill="#f6a800"/>' +
+      '<path d="M34 36 Q40 39 46 36" stroke="#c98200" stroke-width="1.1" fill="none" stroke-linecap="round"/></svg></div>';
+    document.body.appendChild(el2);
+    tux = el2;
+    var say = document.getElementById("tuxsay"), body2 = document.getElementById("tuxbody"), eyes = document.getElementById("tuxeyes");
+    var tx = Math.random() * Math.max(window.innerWidth - 90, 1), dir = 1, mode = "idle", target = tx, speed = 55, wait = 1.2, sayT;
+    var quips = ["sudo make me a sandwich 🥪", "I use Arch, btw", "rm -rf boredom", "Have you tried turning it off and on again?",
+      "There is no cloud. It's just someone else's Linux box.", "Zamiq's pods are healthy. Mine are cold 🧊", "Waddling in userspace…", "kubectl get fish",
+      "It works on my machine 🐧", "Fun fact: I'm the real mascot of this page"];
+    function placeBubble() {
+      say.style.left = say.style.right = ""; say.style.transform = "";
+      if (tx < 110) say.style.left = "0"; else if (tx > window.innerWidth - 230) say.style.right = "0";
+      else { say.style.left = "50%"; say.style.marginLeft = "-105px"; }
+    }
+    function talk(msg) {
+      say.style.marginLeft = ""; placeBubble(); say.textContent = msg || quips[Math.floor(Math.random() * quips.length)];
+      say.classList.add("show"); clearTimeout(sayT); sayT = setTimeout(function () { say.classList.remove("show"); }, 3200);
+    }
+    function hop() {
+      body2.animate([{ transform: "translateY(0)" }, { transform: "translateY(-34px) rotate(-8deg)" }, { transform: "translateY(0)" }],
+        { duration: 520, easing: "cubic-bezier(.3,.7,.4,1)" });
+    }
+    function walkTo(x, fast) {
+      target = Math.max(0, Math.min(x, window.innerWidth - 64)); dir = target >= tx ? 1 : -1; speed = fast ? 150 : 55;
+      mode = "walk"; tux.classList.add("walk"); eyes.style.transform = "translateX(" + (dir * 2.2) + "px)";
+    }
+    function nextMove() {
+      mode = "idle"; tux.classList.remove("walk"); eyes.style.transform = "translateX(0)";
+      var r = Math.random();
+      if (r < .62) { wait = .1; walkTo(tx + (Math.random() < .5 ? -1 : 1) * (120 + Math.random() * 380)); }
+      else if (r < .8) { wait = 1 + Math.random() * 2.5; }
+      else if (r < .92) { wait = 1; hop(); }
+      else { wait = 2.2; talk(); }
+    }
+    var last = 0;
+    function tuxTick(ts) {
+      var dt = Math.min((ts - last) / 1000 || 0, .05); last = ts;
+      if (mode === "walk") {
+        tx += dir * speed * dt;
+        if ((dir > 0 && tx >= target) || (dir < 0 && tx <= target)) { tx = target; mode = "idle"; tux.classList.remove("walk"); wait = .6 + Math.random() * 1.6; }
+        body2.style.scale = dir < 0 ? "-1 1" : "1 1";
+      } else { wait -= dt; if (wait <= 0) nextMove(); }
+      tux.style.transform = "translateX(" + tx.toFixed(1) + "px)";
+      requestAnimationFrame(tuxTick);
+    }
+    tux.addEventListener("click", function (e) { e.stopPropagation(); hop(); talk(); });
+    window.addEventListener("resize", function () { tx = Math.min(tx, Math.max(window.innerWidth - 64, 0)); });
+    requestAnimationFrame(tuxTick);
+    window.__tuxCome = function (x) { walkTo(x - 32, true); talk("Coming! 🐧💨"); };
+  }
+
+  // matrix rain
+  var cv = document.getElementById("matrix"), ctx = cv.getContext("2d"), rain = null;
+  function matrix(ms) {
+    if (rain) return;
+    cv.width = window.innerWidth; cv.height = window.innerHeight;
+    var size = 16, cols = Math.floor(cv.width / size), drops = [], chars = "01アイウエオカキクケコサシスセソ<>{}/=;";
+    for (var i = 0; i < cols; i++) drops[i] = Math.random() * -40;
+    cv.classList.add("on");
+    var accent = getComputedStyle(root).getPropertyValue("--accent").trim() || "#5eead4";
+    rain = setInterval(function () {
+      ctx.fillStyle = "rgba(0,0,0,.08)"; ctx.fillRect(0, 0, cv.width, cv.height);
+      ctx.fillStyle = accent; ctx.font = size + "px monospace";
+      drops.forEach(function (y, i) {
+        ctx.fillText(chars[Math.floor(Math.random() * chars.length)], i * size, y * size);
+        drops[i] = y * size > cv.height && Math.random() > 0.975 ? 0 : y + 1;
+      });
+    }, 45);
+    setTimeout(function () {
+      cv.classList.remove("on");
+      setTimeout(function () { clearInterval(rain); rain = null; ctx.clearRect(0, 0, cv.width, cv.height); }, 700);
+    }, ms || 7000);
+  }
+
+  // Konami code
+  var seq = ["ArrowUp","ArrowUp","ArrowDown","ArrowDown","ArrowLeft","ArrowRight","ArrowLeft","ArrowRight","b","a"], pos = 0;
+  window.addEventListener("keydown", function (e) {
+    if (e.target && e.target.tagName === "INPUT") return;
+    var k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+    pos = k === seq[pos] ? pos + 1 : (k === seq[0] ? 1 : 0);
+    if (pos === seq.length) { pos = 0; toast("↑↑↓↓←→←→BA — you found the cheat code 🎮"); if (!reduce) matrix(); }
+  });
+
+  // logo easter egg: click 5 times
+  var logo = document.querySelector(".logo"), clicks = 0, clickT;
+  logo.addEventListener("click", function () {
+    clicks++; clearTimeout(clickT); clickT = setTimeout(function () { clicks = 0; }, 900);
+    if (clicks >= 5) { clicks = 0; logo.classList.add("spin"); toast("Whoa, easy there. It's just a logo 😄");
+      setTimeout(function () { logo.classList.remove("spin"); }, 950); }
+  });
+
+  // interactive terminal
+  var out = document.getElementById("out"), input = document.getElementById("cmd"), term = document.getElementById("term");
+  var history = [], hi = 0, started = Date.now(), lastX = window.innerWidth / 2;
+  window.addEventListener("mousemove", function (e) { lastX = e.clientX; }, { passive: true });
+  var P = "$ ";
+  function print(text, cls) {
+    var line = document.createElement("span");
+    if (cls) line.className = cls;
+    line.textContent = text + "\n"; out.appendChild(line); out.scrollTop = out.scrollHeight;
+  }
+  var commands = {
+    help: function () { print("about: whoami, skills, experience, projects, certs, contact, uptime\n          fun:   joke, fortune, cowsay hi, neofetch, hack, sl, top, ping,\n                 docker ps, git blame, vim, date, echo hi, history, 42\n          misc:  kubectl get pods, coffee, ls, matrix, penguin, theme, clear\n          (and a few things I will not tell you about 🤫)", "k"); },
+    whoami: function () { print("Zamiq Mustafayev: Linux/DevOps engineer, Salesforce DevOps, Baku. Also a person who talks to terminals."); },
+    skills: function () { print("Kubernetes · Terraform · Ansible · GitLab CI · AWS/Azure · Python · Prometheus/Grafana · Salesforce DevOps"); },
+    experience: function () { print("ABB (Azerbaijan International Bank) → ITG → Persistent → Vebtech → LogicLike → EPAM → Yapi Kredi → SMART"); },
+    projects: function () { print("IOP · CIS benchmark CLI · SecureVault · n8n/GPT-4 automations  (scroll down for details)"); },
+    certs: function () { print("Salesforce x3 · AWS SAA · LPIC-1/2/3 · Oracle Linux · CCNA · Nessus · CEH v12"); },
+    contact: function () { print("zamiq.mustafayev@gmail.com · github.com/rhelsenseizamiq"); },
+    uptime: function () { var s = Math.floor((Date.now() - started) / 1000); print("up " + s + "s: you have been on this page for " + s + " seconds, 99.99% availability of my attention", "ok"); },
+    ls: function () { print("about/  skills/  experience/  projects/  certs/  secrets.txt"); },
+    coffee: function () { print("   ( (\n    ) )\n  .______.\n  |      |]\n  \\      /\n   `----'   brewing... done. ☕", "ok"); },
+    matrix: function () { print("Wake up, Zamiq...", "ok"); if (reduce) print("(reduced motion is on, skipping the show)"); else matrix(5000); },
+    penguin: function () { if (window.__tuxCome) { window.__tuxCome(lastX); print("Tux is on his way. Do not feed after midnight.", "ok"); } else print("Tux is resting (reduced motion is on)."); },
+    theme: function () { btn.click(); print("theme toggled"); },
+    clear: function () { out.textContent = ""; }
+  };
+  var jokes = [
+    "Why do DevOps engineers hate nature? Too many bugs and no CI.",
+    "A SQL query walks into a bar, sees two tables, and asks: can I join you?",
+    "There are 10 kinds of people: those who understand binary and those who don't.",
+    "It's not a bug, it's an undocumented feature.",
+    "I'd tell you a UDP joke, but you might not get it.",
+    "Kubernetes: because 'it works on my machine' needed to scale.",
+    "git commit -m 'final'. Narrator: it was not final.",
+    "My code never has bugs. It just develops random features.",
+    "A programmer's spouse says: go to the store, get milk, and if they have eggs, get 12. They come back with 12 milks.",
+    "Friday deploy? Bold. Brave. Reckless. Mostly reckless."
+  ];
+  var fortunes = [
+    "You will soon fix a bug by restarting it.",
+    "A pod in CrashLoopBackOff is just a pod learning resilience.",
+    "Your next pull request will be approved without comments. (Do not tell the reviewers.)",
+    "The best config is the one you did not have to edit at 3 a.m.",
+    "Someone will ask 'is it DNS?' today. It will be DNS.",
+    "Backups you never test are just wishes."
+  ];
+  function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
+  function later(lines, gap, cls) { lines.forEach(function (l, i) { setTimeout(function () { print(l, cls); }, i * gap); }); }
+  function cow(text) {
+    text = (text || "moo").slice(0, 40);
+    var top = " " + new Array(text.length + 3).join("_"), bot = " " + new Array(text.length + 3).join("-");
+    print([top, "< " + text + " >", bot, "        \\   ^__^", "         \\  (oo)\\_______", "            (__)\\       )\\/\\", "                ||----w |", "                ||     ||"].join("\n"), "ok");
+  }
+  function fun(c, raw) {
+    if (c === "sudo make me a sandwich") { print("Okay. 🥪", "ok"); return true; }
+    if (c === "make me a sandwich") { print("What? Make it yourself."); return true; }
+    if (c === "joke") { print(pick(jokes), "ok"); return true; }
+    if (c === "fortune") { print("🔮 " + pick(fortunes), "ok"); return true; }
+    if (c === "cowsay" || c.indexOf("cowsay ") === 0) { cow(raw.trim().slice(7)); return true; }
+    if (c === "echo" || c.indexOf("echo ") === 0) { print(raw.trim().slice(5)); return true; }
+    if (c === "sl") { print("      ====        ________\n  _D _|  |_______/        \\__I_I_____===__|\n   |(_)---  |   H\\________/ |   |        =|___ ___|\n  /     |  |   H  |  |     |   |         ||_| |_||\n 🚂💨 choo choo! You meant 'ls', didn't you?", "ok"); return true; }
+    if (c === "neofetch") {
+      print("zamiq@portfolio\n---------------\nOS:       HTML5 / CSS3 / vanilla JS\nHost:     your browser\nKernel:   curiosity 6.1-lts\nUptime:   " + Math.floor((Date.now() - started) / 1000) + "s\nShell:    zsh (pretending)\nSkills:   Kubernetes, Terraform, Python, coffee\nCoffee:   low  ⚠", "ok"); return true; }
+    if (c === "hack") {
+      later(["Initializing hack sequence…", "Bypassing firewall  [###.......]", "Cracking mainframe   [#######...]", "Downloading the internet [##########]", "ACCESS GRANTED… just kidding, this is a portfolio. 😄"], 650, "ok"); return true; }
+    if (c === "top" || c === "htop") {
+      print("PID   CPU    CMD\n  1   99.9%  portfolio.html (hiring)\n 42    0.4%  penguin --waddle\n 77   12.0%  coffee-pump (CrashLoopBackOff)\n404    0.0%  motivation (not found)", "ok"); return true; }
+    if (c === "ping" || c.indexOf("ping ") === 0) {
+      later(["PING localhost: 56 data bytes", "64 bytes from 127.0.0.1: icmp_seq=0 time=0.042 ms", "64 bytes from 127.0.0.1: icmp_seq=1 time=0.039 ms", "(it's localhost. You are not going anywhere.)"], 450, "ok"); return true; }
+    if (c === "docker ps") { print("CONTAINER   IMAGE        STATUS\nportfolio   nginx:cool   Up 2 hours (healthy)\npenguin     tux:latest   Up (waddling)\ncoffee      java:strong  Exited (1) 5 minutes ago", "ok"); return true; }
+    if (c === "git blame") { print("It was Zamiq. It's always Zamiq. (Sometimes it's past-Zamiq.)"); return true; }
+    if (c === "git status") { print("On branch main\nnothing to commit, working tree clean\n(a portfolio is always clean. Allegedly.)", "ok"); return true; }
+    if (c.indexOf("git commit") === 0) { var m = raw.match(/-m\s+["']?(.+?)["']?$/); print("[main 4f2a1c9] " + (m ? m[1] : "update stuff") + "\n 1 file changed, 1 insertion(+), 0 deletions(-)\n(no, it was not saved anywhere)", "ok"); return true; }
+    if (c === "vim" || c === "vi" || c === "nano" || c === "emacs") { print("You are now in " + c + ". There is no way out.\n(just kidding. Type ':q!'. Wait, that only works in vim 😅)"); return true; }
+    if (c === ":q" || c === ":q!" || c === ":wq") { print("Escaped. You are a rare engineer. 🏆", "ok"); return true; }
+    if (c === "date") { print(new Date().toString()); return true; }
+    if (c === "pwd") { print("/home/zamiq/portfolio"); return true; }
+    if (c === "uname -a" || c === "uname") { print("Linux portfolio 6.1.0-curiosity #1 SMP PREEMPT Tux x86_64 GNU/Linux"); return true; }
+    if (c === "history") { print(history.slice(-12).map(function (h, i) { return " " + (i + 1) + "  " + h; }).join("\n") || "(empty. Type something!)"); return true; }
+    if (c === "man" || c.indexOf("man ") === 0) { print("What manual page do you want? (Reading manuals is a lost art.)"); return true; }
+    if (c === "ssh" || c.indexOf("ssh ") === 0) { print("Permission denied (publickey). Nice try though. 🔑", "err"); return true; }
+    if (c === "42") { print("The answer to life, the universe and everything.", "ok"); return true; }
+    if (c === "is it dns") { print("It's always DNS.", "ok"); return true; }
+    if (c === "reboot" || c === "shutdown") { print("Rebooting… just kidding. I'm a web page.", "ok"); return true; }
+    return false;
+  }
+  function run(raw) {
+    var c = raw.trim().toLowerCase().replace(/\s+/g, " ");
+    if (!c) return;
+    print(P + raw, "p");
+    if (commands[c]) return commands[c]();
+    if (fun(c, raw)) return;
+    if (c === "kubectl get pods") return print("NAME            READY   STATUS\nportfolio-7d9   1/1     Running\ncoffee-pump     0/1     CrashLoopBackOff   (needs refill)", "ok");
+    if (c === "cat secrets.txt") return print("The password is not 'password123'. Probably.");
+    if (c.indexOf("sudo") === 0) return print("zamiq is not in the sudoers file. This incident will be reported. 🚨", "err");
+    if (c.indexOf("rm -rf") === 0) return print("Nice try. This is a static HTML page, there is nothing to delete.", "err");
+    if (c === "exit") return print("There is no escape. Try scrolling instead.");
+    if (c === "hello" || c === "hi") return print("Hello! Type 'help' to see what I can do.");
+    print("command not found: " + c + "   (try 'help')", "err");
+  }
+  input.addEventListener("keydown", function (e) {
+    if (e.key === "Enter") { history.push(input.value); hi = history.length; run(input.value); input.value = ""; }
+    else if (e.key === "ArrowUp") { if (hi > 0) input.value = history[--hi]; e.preventDefault(); }
+    else if (e.key === "ArrowDown") { input.value = hi < history.length - 1 ? history[++hi] : ((hi = history.length), ""); e.preventDefault(); }
+  });
+  term.addEventListener("click", function () { input.focus({ preventScroll: true }); });
+  print("Welcome! This terminal is real. Type 'help'.", "k");
+  print("");
+  commands.whoami();
+  setTimeout(function () { toast("psst… the terminal in the hero is interactive. Type 'help' 👀"); }, 3500);
+})();
+</script>
+</body>
+</html>
